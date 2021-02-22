@@ -6,6 +6,7 @@ import AddTodo from './AddTodo';
 
 
 export default function Heading(props) {
+
     const [modalval, setModalVal] = useState(false);
 
     const showModal = () => {
@@ -15,7 +16,7 @@ export default function Heading(props) {
     return (
         <>
             <View style={styles.headingView}>
-                <Text style={styles.heading}> Add Todos </Text>
+                <Text style={styles.heading}> Add Todo </Text>
                 <TouchableOpacity
                     style={styles.touchableHeading}
                     onPress={showModal}
@@ -29,7 +30,6 @@ export default function Heading(props) {
                     showModal={showModal}
                     setModalVal={setModalVal}
                     addTodo={props.addTodo}
-                    addPriotiyValue={props.addPriotiyValue}
                 />
             ) : null}
         </>

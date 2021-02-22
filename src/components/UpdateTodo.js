@@ -9,9 +9,19 @@ import {
 } from "react-native";
 import { Colors } from "./Colors";
 
-export default function AddTodo(props) {
-    const [text, setText] = useState('');
-    const [valueText, setValueText] = useState('');
+export default function UpdateTodo(props) {
+
+    let temp = "";
+    let temp1 = "";
+    if (props.edittext.length > 0) {
+        const { text, value } = props.edittext[0]
+        temp = text,
+            temp1 = value
+    }
+
+
+    const [text, setText] = useState(temp);
+    const [valueText, setValueText] = useState(temp1);
 
     const todoText = (val) => {
         setText(val)
@@ -21,12 +31,38 @@ export default function AddTodo(props) {
         setValueText(val)
     }
 
+    let updatedValue = 0;
+    const updateValue = () => {
+        if (parseInt(valueText) > 10 || parseInt(valueText) < 0) {
+            alert("Priority value should be in between 1-10");
+        }
+        else if (text.trim().length > 0 && valueText.length > 0) {
+            if (props.edittext.length > 0) {
+                let res = props.edittext[0]
+                res.text = text.trim();
+                res.value = valueText;
+                props.todos.forEach((a, i) => {
+                    if (a.key == res.key) {
+                        props.todos[i] = res;
+                    }
+                })
+                props.todos.forEach((a) => {
+                    updatedValue = updatedValue + parseInt(a.value)
+                    props.setSum(parseInt(updatedValue))
+                })
+            }
+        } else {
+            alert("Fill all the field")
+        }
+        props.setUpdateModal(false);
+
+    }
     return (
         <View>
             <Modal visible={props.modalval} animationType="fade" transparent={true}>
                 <View style={styles.externalView}>
                     <View style={styles.internalView}>
-                        <Text style={styles.headerText}> Add Todo </Text>
+                        <Text style={styles.headerText}> Update Todo </Text>
 
                         <TextInput
                             style={styles.inputBox}
@@ -43,17 +79,14 @@ export default function AddTodo(props) {
                             onChangeText={priorityValue}
                         />
                         <View style={styles.thirdView}>
-                            <TouchableOpacity onPress={props.showModal}>
+                            <TouchableOpacity onPress={props.showUpdateModal}>
                                 <Text style={styles.textStyle}>Cancel</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => {
-                                    props.addTodo(text, valueText)
-                                    props.setModalVal(false);
-                                }}
+                                onPress={updateValue}
                             >
-                                <Text style={styles.textStyle}> Done </Text>
+                                <Text style={styles.textStyle}>Update</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -127,4 +160,3 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 });
-

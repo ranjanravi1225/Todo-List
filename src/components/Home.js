@@ -7,26 +7,36 @@ import { Colors } from "./Colors";
 
 export default function Home() {
 
+    const [edittext, setEditText] = useState('');
+
     const [todos, setTodos] = useState([])
 
     const [sum, setSum] = useState(0);
 
+    const [updateModal, setUpdateModal] = useState(false)
+    const showUpdateModal = () => {
+        setUpdateModal(!updateModal);
+    }
+
+
     const addTodo = (text, valueText) => {
-        if (text.trim().length > 0) {
+        if (parseInt(valueText) > 10 || parseInt(valueText) < 0) {
+            alert("Priority value should be in between 1-10");
+        }
+        else if (text.trim().length > 0 && valueText.length > 0) {
             setTodos([
                 ...todos,
-                { text: text.trim(), value: valueText.trim(), key: Math.random().toString(), check: false },
+                { text: text.trim(), value: valueText, key: Math.random().toString(), check: false },
             ]
             );
+            setSum(sum + parseInt(valueText));
+
         } else {
-            alert("List can't be empty");
+            alert("Fill all the input field");
         }
     }
 
-    const addPriotiyValue = (valueText) => {
-        let temp = parseInt(valueText);
-        setSum(sum + temp);
-    }
+
     const changeStatus = (key) => {
         const checkStatus = todos.map((e) => {
             if (e.key === key) {
@@ -38,11 +48,18 @@ export default function Home() {
         setTodos(checkStatus);
     };
 
+    const updateTodo = (key, text, value) => {
+        showUpdateModal(true)
+        const arr = todos.filter((e) => e.key == key)
+        setEditText(arr);
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Heading addTodo={addTodo} sum={sum} addPriotiyValue={addPriotiyValue} />
+            <Heading addTodo={addTodo} />
             <View>
-                <Todos todos={todos} changeStatus={changeStatus} />
+                <Todos edittext={edittext} setSum={setSum} todos={todos} addTodo={addTodo} updateTodo={updateTodo} changeStatus={changeStatus}
+                    showUpdateModal={showUpdateModal} updateModal={updateModal} setUpdateModal={setUpdateModal} />
             </View>
             <View style={styles.mainView}>
                 <View style={styles.totalView}>

@@ -10,49 +10,66 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Octicons from "react-native-vector-icons/Octicons";
 import { Colors } from "./Colors";
+import UpdateTodo from './UpdateTodo';
 
-export default function Todo(props) {
-
-
+export default function Todos(props) {
     return (
-        <SafeAreaView style={styles.firstView}>
-            <FlatList
-                data={props.todos}
-                renderItem={({ item }) => (
-                    <View style={styles.flatlistView}>
-                        <TouchableOpacity onPress={() => props.changeStatus(item.key)}>
-                            <Icon
-                                name={
-                                    item.check
-                                        ? "checkbox-marked-circle-outline"
-                                        : "checkbox-blank-circle-outline"
-                                }
-                                size={30}
-                                color={item.check ? Colors.green : Colors.red}
-                            />
-                        </TouchableOpacity>
-
-                        <View style={styles.touchView}>
-                            <Text
-                                style={item.check ? styles.flatlistText1 : styles.flatlistText}
+        <>
+            <SafeAreaView style={styles.firstView}>
+                <FlatList
+                    data={props.todos}
+                    renderItem={({ item }) => (
+                        <View style={styles.flatlistView} onPress={props.showModal}>
+                            <TouchableOpacity onPress={() => props.changeStatus(item.key)}>
+                                <Icon
+                                    name={
+                                        item.check
+                                            ? "checkbox-marked-circle-outline"
+                                            : "checkbox-blank-circle-outline"
+                                    }
+                                    size={30}
+                                    color={item.check ? Colors.green : Colors.red}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.touchView}
+                                onPress={() => {
+                                    props.updateTodo(item.key, item.text, item.value)
+                                }}
                             >
-                                {item.text}
-                            </Text>
-                            <Octicons
-                                name="primitive-dot"
-                                size={30}
-                                color={item.check ? Colors.green : Colors.red}
-                            />
-                            <View style={styles.priorityText}>
-                                <Text style={{ fontSize: 20 }}>{item.value}</Text>
+                                <Text
+                                    style={item.check ? styles.flatlistText1 : styles.flatlistText}
+                                >
+                                    {item.text}
+                                </Text>
 
-                            </View>
+                                <Octicons
+                                    name="primitive-dot"
+                                    size={30}
+                                    color={item.check ? Colors.green : Colors.red}
+                                />
+                                <View style={styles.priorityText}>
+                                    <Text style={{ fontSize: 20 }}>{item.value}</Text>
+
+                                </View>
+                            </TouchableOpacity>
                         </View>
+                    )}
+                />
+            </SafeAreaView>
 
-                    </View>
-                )}
-            />
-        </SafeAreaView>
+            {props.updateModal ? (
+                <UpdateTodo
+                    updateModal={props.updateModal}
+                    showUpdateModal={props.showUpdateModal}
+                    setUpdateModal={props.setUpdateModal}
+                    addTodo={props.addTodo}
+                    edittext={props.edittext}
+                    todos={props.todos}
+                    setSum={props.setSum}
+                />
+            ) : null}
+        </>
     );
 }
 
