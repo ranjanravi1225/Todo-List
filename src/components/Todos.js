@@ -6,6 +6,7 @@ import {
     View,
     SafeAreaView,
     TouchableOpacity,
+    ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Octicons from "react-native-vector-icons/Octicons";
@@ -15,47 +16,49 @@ import UpdateTodo from './UpdateTodo';
 export default function Todos(props) {
     return (
         <>
-            <SafeAreaView style={styles.firstView}>
-                <FlatList
-                    data={props.todos}
-                    renderItem={({ item }) => (
-                        <View style={styles.flatlistView} onPress={props.showModal}>
-                            <TouchableOpacity onPress={() => props.changeStatus(item.key)}>
-                                <Icon
-                                    name={
-                                        item.check
-                                            ? "checkbox-marked-circle-outline"
-                                            : "checkbox-blank-circle-outline"
-                                    }
-                                    size={30}
-                                    color={item.check ? Colors.green : Colors.red}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.touchView}
-                                onPress={() => {
-                                    props.updateTodo(item.key, item.text, item.value)
-                                }}
-                            >
-                                <Text
-                                    style={item.check ? styles.flatlistText1 : styles.flatlistText}
+            <SafeAreaView style={styles.firstView} contentContainerStyle={{ flex: 1 }}>
+                <ScrollView>
+                    <FlatList
+                        data={props.todos.slice(props.page * 10 - 10, props.page * 10)}
+                        renderItem={({ item }) => (
+                            <View style={styles.flatlistView} onPress={props.showModal}>
+                                <TouchableOpacity onPress={() => props.changeStatus(item.key)}>
+                                    <Icon
+                                        name={
+                                            item.check
+                                                ? "checkbox-marked-circle-outline"
+                                                : "checkbox-blank-circle-outline"
+                                        }
+                                        size={30}
+                                        color={item.check ? Colors.green : Colors.red}
+                                    />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.touchView}
+                                    onPress={() => {
+                                        props.updateTodo(item.key, item.text, item.value)
+                                    }}
                                 >
-                                    {item.text}
-                                </Text>
+                                    <Text
+                                        style={item.check ? styles.flatlistText1 : styles.flatlistText}
+                                    >
+                                        {item.text}
+                                    </Text>
 
-                                <Octicons
-                                    name="primitive-dot"
-                                    size={30}
-                                    color={item.check ? Colors.green : Colors.red}
-                                />
-                                <View style={styles.priorityText}>
-                                    <Text style={{ fontSize: 20 }}>{item.value}</Text>
+                                    <Octicons
+                                        name="primitive-dot"
+                                        size={30}
+                                        color={item.check ? Colors.green : Colors.red}
+                                    />
+                                    <View style={styles.priorityText}>
+                                        <Text style={{ fontSize: 20 }}>{item.value}</Text>
 
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                    />
+                </ScrollView>
             </SafeAreaView>
 
             {props.updateModal ? (
@@ -77,6 +80,7 @@ const styles = StyleSheet.create({
     firstView: {
         flexDirection: "row",
         justifyContent: "space-around",
+        height: 560,
     },
 
     flatlistView: {
