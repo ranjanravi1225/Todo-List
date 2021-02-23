@@ -11,42 +11,7 @@ export default function Home() {
 
     const [edittext, setEditText] = useState('');
 
-    const [todos, setTodos] = useState([
-        { text: 'abc', key: 1, check: false, value: 1 },
-        { text: 'abc', key: 2, check: false, value: 2 },
-        { text: 'abc', key: 3, check: false, value: 3 },
-        { text: 'abc', key: 4, check: false, value: 4 },
-        { text: 'abc', key: 5, check: false, value: 5 },
-        { text: 'abc', key: 6, check: false, value: 6 },
-        { text: 'abc', key: 7, check: false, value: 7 },
-        { text: 'abc', key: 8, check: false, value: 8 },
-        { text: 'abc', key: 9, check: false, value: 9 },
-        { text: 'abc', key: 10, check: false, value: 10 },
-        { text: 'xyz', key: 11, check: false, value: 11 },
-        { text: 'xyz', key: 12, check: false, value: 12 },
-        { text: 'abc', key: 13, check: false, value: 13 },
-        { text: 'abc', key: 22, check: false, value: 14 },
-        { text: 'abc', key: 33, check: false, value: 15 },
-        { text: 'abc', key: 44, check: false, value: 16 },
-        { text: 'abc', key: 55, check: false, value: 17 },
-        { text: 'abc', key: 65, check: false, value: 18 },
-        { text: 'abc', key: 75, check: false, value: 19 },
-        { text: 'abc', key: 85, check: false, value: 20 },
-        { text: 'abc', key: 95, check: false, value: 21 },
-        { text: 'abc', key: 105, check: false, value: 22 },
-        { text: 'xyz', key: 115, check: false, value: 23 },
-        { text: 'xyz', key: 125, check: false, value: 24 },
-        { text: 'abc', key: 815, check: false, value: 25 },
-        { text: 'abc', key: 951, check: false, value: 26 },
-        { text: 'abc', key: 1051, check: false, value: 27 },
-        { text: 'xyz', key: 1151, check: false, value: 28 },
-        { text: 'xyz', key: 1251, check: false, value: 29 },
-        { text: 'abc', key: 851, check: false, value: 30 },
-        { text: 'abc', key: 955, check: false, value: 31 },
-        { text: 'abc', key: 1055, check: false, value: 32 },
-        { text: 'xyz', key: 1155, check: false, value: 33 },
-        { text: 'xyz', key: 1265, check: false, value: 34 },
-    ])
+    const [todos, setTodos] = useState([])
 
     const [sum, setSum] = useState(0);
 
