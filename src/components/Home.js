@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import Heading from "./Heading";
 import Todos from "./Todos";
 import Constants from "expo-constants";
@@ -117,12 +117,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.white,
         marginTop: Constants.statusBarHeight,
+        height: Dimensions.get('window').height,
+
     },
     mainView: {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         borderWidth: 1,
-        width: 400,
+        width: Dimensions.get('window').width,
         borderTopColor: Colors.black,
     },
     totalView: {
