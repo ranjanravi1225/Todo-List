@@ -1,21 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Home from './src/components/Home';
-import { Colors } from './src/components/Colors';
+import Login from './src/screen/Login';
+import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
+
+
+const Stack = createStackNavigator();
 
 export default function App() {
+
+  const [localId, setLocalId] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const id = await AsyncStorage.getItem("id")
+      setLocalId(id);
+    })();
+  }, [])
+
+
   return (
-    <View style={styles.container}>
-      <Home />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName={localId ? 'Home' : 'Login'}
+        screenOptions={{
+          headerShown: false
+        }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+      <StatusBar barStyle='light-content' style="auto" />
+
+    </NavigationContainer>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-});
