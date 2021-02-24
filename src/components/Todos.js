@@ -1,64 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     FlatList,
     StyleSheet,
-    Text,
-    View,
     SafeAreaView,
-    TouchableOpacity,
-    ScrollView,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Octicons from "react-native-vector-icons/Octicons";
 import { Colors } from "./Colors";
 import UpdateTodo from './UpdateTodo';
+import AddSubTodo from './AddSubTodo';
+import TodoList from './TodoList';
 
 export default function Todos(props) {
+
+    const [subModalval, setSubModalval] = useState(false);
+
+    const showSubModal = () => {
+        setSubModalval(!subModalval);
+    }
+
+
     return (
         <>
             <SafeAreaView style={styles.firstView} contentContainerStyle={{ flex: 1 }}>
-                <ScrollView>
-                    <FlatList
-                        data={props.todos.slice(props.page * 10 - 10, props.page * 10)}
-                        renderItem={({ item }) => (
-                            <View style={styles.flatlistView} onPress={props.showModal}>
-                                <TouchableOpacity onPress={() => props.changeStatus(item.key)}>
-                                    <Icon
-                                        name={
-                                            item.check
-                                                ? "checkbox-marked-circle-outline"
-                                                : "checkbox-blank-circle-outline"
-                                        }
-                                        size={30}
-                                        color={item.check ? Colors.green : Colors.red}
-                                    />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.touchView}
-                                    onPress={() => {
-                                        props.updateTodo(item.key, item.text, item.value)
-                                    }}
-                                >
-                                    <Text
-                                        style={item.check ? styles.flatlistText1 : styles.flatlistText}
-                                    >
-                                        {item.text}
-                                    </Text>
-
-                                    <Octicons
-                                        name="primitive-dot"
-                                        size={30}
-                                        color={item.check ? Colors.green : Colors.red}
-                                    />
-                                    <View style={styles.priorityText}>
-                                        <Text style={{ fontSize: 20 }}>{item.value}</Text>
-
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    />
-                </ScrollView>
+                <FlatList
+                    data={props.todos.slice(props.page * 10 - 10, props.page * 10)}
+                    renderItem={({ item }) => (
+                        <TodoList
+                            changeStatus={props.changeStatus}
+                            updateTodo={props.updateTodo}
+                            showSubModal={showSubModal}
+                            addSubTodo={props.addSubTodo}
+                            todos={props.todos}
+                            item={item}
+                        />
+                    )}
+                />
             </SafeAreaView>
 
             {props.updateModal ? (
@@ -72,14 +47,22 @@ export default function Todos(props) {
                     setSum={props.setSum}
                 />
             ) : null}
+
+            {subModalval ? (
+                <AddSubTodo
+                    subModalval={subModalval}
+                    showSubModal={showSubModal}
+                    setSubModalval={setSubModalval}
+                    getTodokey={props.getTodokey}
+
+                />
+            ) : null}
         </>
     );
 }
 
 const styles = StyleSheet.create({
     firstView: {
-        flexDirection: "row",
-        justifyContent: "space-around",
         height: 560,
     },
 
@@ -89,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingVertical: 20,
         marginHorizontal: 15,
-        minHeight: 70,
+        height: 70,
         borderBottomWidth: 0.5,
         borderBottomColor: Colors.lightgray,
     },
@@ -126,6 +109,14 @@ const styles = StyleSheet.create({
         margin: 1,
         marginHorizontal: 10,
         marginBottom: 5,
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    addTouchable: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderLeftWidth: 1,
+        borderLeftColor: Colors.lightgray,
+        height: 70,
+        padding: 5
     }
 });

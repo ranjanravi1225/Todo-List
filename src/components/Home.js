@@ -8,12 +8,27 @@ import { Colors } from "./Colors";
 export default function Home() {
 
     const [page, setPage] = useState(1);
-
     const [edittext, setEditText] = useState('');
-
-    const [todos, setTodos] = useState([])
-
     const [sum, setSum] = useState(0);
+    const [getTodokey, setGetTodoKey] = useState('');
+
+    const [todos, setTodos] = useState([
+        {
+            text: 'abc', key: 1, check: false, value: 1,
+            subTodo: [
+                { text: 'sub', key: 8, check: true, value: 1 },
+                { text: 'sub2', key: 9, check: false, value: 2 },
+            ]
+        },
+        {
+            text: 'xyz', key: 2, check: false, value: 2,
+            subTodo: [
+                { text: 'sub3', key: 8, check: false, value: 1 },
+                { text: 'sub4', key: 9, check: false, value: 2 },
+            ]
+        },
+
+    ])
 
     const [updateModal, setUpdateModal] = useState(false)
     const showUpdateModal = () => {
@@ -28,7 +43,7 @@ export default function Home() {
         else if (text.trim().length > 0 && valueText.length > 0) {
             setTodos([
                 ...todos,
-                { text: text.trim(), value: valueText, key: Math.random().toString(), check: false },
+                { text: text.trim(), value: valueText, key: Math.random().toString(), check: false, },
             ]
             );
             setSum(sum + parseInt(valueText));
@@ -54,6 +69,7 @@ export default function Home() {
         const arr = todos.filter((e) => e.key == key)
         setEditText(arr);
     }
+
     todosLength = Math.ceil(todos.length / 10);
 
 
@@ -68,6 +84,10 @@ export default function Home() {
         }
     }
 
+    const addSubTodo = (key) => {
+        const arr = todos.filter((e) => e.key == key)
+        setGetTodoKey(arr);
+    }
 
     return (
         <View style={styles.container}>
@@ -76,7 +96,9 @@ export default function Home() {
 
 
                 <Todos page={page} edittext={edittext} setSum={setSum} todos={todos} addTodo={addTodo} updateTodo={updateTodo} changeStatus={changeStatus}
-                    showUpdateModal={showUpdateModal} updateModal={updateModal} setUpdateModal={setUpdateModal} />
+                    showUpdateModal={showUpdateModal} updateModal={updateModal} setUpdateModal={setUpdateModal}
+                    getTodokey={getTodokey} addSubTodo={addSubTodo}
+                />
             </View>
             <View style={styles.mainView}>
                 <View style={styles.totalView} >
