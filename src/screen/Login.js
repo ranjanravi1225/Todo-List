@@ -12,7 +12,6 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState('');
 
     const pressHandler = async () => {
-        console.log("hello");
         await AsyncStorage.setItem("id", uuidv4());
         navigation.navigate('Home');
     }

@@ -9,48 +9,57 @@ import {
 } from "react-native";
 import { Colors } from "./Colors";
 
-export default function AddTodo(props) {
+export default function AddSubTodo(props) {
+
+
     const [text, setText] = useState('');
-    const [valueText, setValueText] = useState('');
 
     const todoText = (val) => {
         setText(val)
     }
 
-    const priorityValue = (val) => {
-        setValueText(val)
+    const addSubTodo = () => {
+        if (text.trim().length > 0) {
+            if (props.getTodokey.length > 0) {
+                const { key } = props.getTodokey[0]
+                let getKey = key;
+                const addSub = props.todos.map((e) => {
+                    if (e.key == getKey) {
+                        return { ...e, subTodo: [...e.subTodo, { text: text, key: Math.random().toString(), check: false, parentKey: getKey }] };
+                    }
+                    else {
+                        return { ...e };
+                    }
+                })
+                props.setTodos(addSub);
+            }
+        } else {
+            alert("Fill all the field")
+        }
     }
+
 
     return (
         <View>
-            <Modal visible={props.modalval} animationType="fade" transparent={true}>
+            <Modal visible={props.subModalval} animationType="fade" transparent={true}>
                 <View style={styles.externalView}>
                     <View style={styles.internalView}>
-                        <Text style={styles.headerText}> Add Todo </Text>
+                        <Text style={styles.headerText}> Add Sub Todo </Text>
 
                         <TextInput
                             style={styles.inputBox}
                             value={text}
                             onChangeText={todoText}
                         />
-                        <Text style={styles.headerText}> Priority Value(1-10) </Text>
-
-                        <TextInput
-                            style={styles.priorityInputBox}
-                            keyboardType='numeric'
-                            maxLength={2}
-                            value={valueText}
-                            onChangeText={priorityValue}
-                        />
                         <View style={styles.thirdView}>
-                            <TouchableOpacity onPress={props.showModal}>
+                            <TouchableOpacity onPress={props.showSubModal}>
                                 <Text style={styles.textStyle}>Cancel</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    props.addTodo(text, valueText)
-                                    props.setModalVal(false);
+                                    props.setSubModalval(false);
+                                    addSubTodo(text);
                                 }}
                             >
                                 <Text style={styles.textStyle}> Done </Text>
@@ -123,7 +132,7 @@ const styles = StyleSheet.create({
     },
 
     textStyle: {
-        color: Colors.blue,
+        color: Colors.skyBlue,
         fontSize: 20,
     },
 });

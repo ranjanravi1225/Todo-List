@@ -8,32 +8,34 @@ import { NavigationContainer } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator();
+const NO_USER = 'NO_USER';
 
 export default function App() {
 
-  const [localId, setLocalId] = useState('');
+  const [localId, setLocalId] = useState();
 
   useEffect(() => {
     (async () => {
-      const id = await AsyncStorage.getItem("id")
-      setLocalId(id);
+      const id = await AsyncStorage.getItem('id');
+      id ? setLocalId(id) : setLocalId(NO_USER);
     })();
-  }, [])
+  }, []);
 
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={localId ? 'Home' : 'Login'}
-        screenOptions={{
-          headerShown: false
-        }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-      </Stack.Navigator>
-      <StatusBar barStyle='light-content' style="auto" />
-
+      {localId && (
+        <Stack.Navigator
+          initialRouteName={localId === NO_USER ? 'Login' : 'Home'}
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='Home' component={Home} />
+        </Stack.Navigator>
+      )}
+      <StatusBar barStyle='light-content' style='auto' />
     </NavigationContainer>
-
   );
 }
