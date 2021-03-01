@@ -5,6 +5,7 @@ import Todos from "./Todos";
 import Constants from "expo-constants";
 import { Colors } from "./Colors";
 
+
 export default function Home() {
 
     const [page, setPage] = useState(1);
@@ -12,38 +13,22 @@ export default function Home() {
     const [sum, setSum] = useState(0);
     const [getTodokey, setGetTodoKey] = useState('');
 
-    const [todos, setTodos] = useState([
-        {
-            text: 'abc', key: 1, check: false, value: 1,
-            subTodo: [
-                { text: 'sub', key: 8, check: true, value: 1 },
-                { text: 'sub2', key: 9, check: false, value: 2 },
-            ]
-        },
-        {
-            text: 'xyz', key: 2, check: false, value: 2,
-            subTodo: [
-                { text: 'sub3', key: 8, check: false, value: 1 },
-                { text: 'sub4', key: 9, check: false, value: 2 },
-            ]
-        },
-
-    ])
+    const [todos, setTodos] = useState([])
 
     const [updateModal, setUpdateModal] = useState(false)
     const showUpdateModal = () => {
         setUpdateModal(!updateModal);
     }
 
-    let todosLength = 0;
+
     const addTodo = (text, valueText) => {
-        if (parseInt(valueText) > 10 || parseInt(valueText) < 0) {
+        if (parseInt(valueText) > 10 || parseInt(valueText) < 1) {
             alert("Priority value should be in between 1-10");
         }
         else if (text.trim().length > 0 && valueText.length > 0) {
             setTodos([
                 ...todos,
-                { text: text.trim(), value: valueText, key: Math.random().toString(), check: false, },
+                { text: text.trim(), value: valueText, key: Math.random().toString(), check: false, subTodo: [] },
             ]
             );
             setSum(sum + parseInt(valueText));
@@ -51,12 +36,20 @@ export default function Home() {
         } else {
             alert("Fill all the input field");
         }
+
     }
 
     const changeStatus = (key) => {
         const checkStatus = todos.map((e) => {
             if (e.key === key) {
-                return { ...e, check: !e.check };
+                const childSubStatus = e.subTodo.map((a) => {
+                    if (e.check == true) {
+                        return { ...a, check: false }
+                    } else {
+                        return { ...a, check: true }
+                    }
+                })
+                return { ...e, check: !e.check, subTodo: childSubStatus };
             } else {
                 return { ...e };
             }
@@ -64,12 +57,14 @@ export default function Home() {
         setTodos(checkStatus);
     };
 
+
     const updateTodo = (key, text, value) => {
         showUpdateModal(true)
         const arr = todos.filter((e) => e.key == key)
         setEditText(arr);
     }
 
+    let todosLength = 0;
     todosLength = Math.ceil(todos.length / 10);
 
 
@@ -89,15 +84,39 @@ export default function Home() {
         setGetTodoKey(arr);
     }
 
+
+    const changeSubTodoStatus = (key, parentKey) => {
+        const parent = todos.map((e, i) => {
+            if (e.key == parentKey) {
+                const child = e.subTodo.map((a) => {
+                    if (a.key == key) {
+                        return { ...a, check: !a.check }
+                    } else {
+                        return { ...a }
+                    }
+                })
+                const res = child.map((val) => val.check == true)
+                if (!res.includes(false)) {
+                    todos[i].check = true
+                } else {
+                    todos[i].check = false
+                }
+                return { ...e, subTodo: child }
+            } else {
+                return { ...e }
+            }
+        })
+        setTodos(parent);
+    }
+
+
     return (
         <View style={styles.container}>
             <View style={{ justifyContent: 'flex-start' }}>
                 <Heading addTodo={addTodo} />
-
-
                 <Todos page={page} edittext={edittext} setSum={setSum} todos={todos} addTodo={addTodo} updateTodo={updateTodo} changeStatus={changeStatus}
                     showUpdateModal={showUpdateModal} updateModal={updateModal} setUpdateModal={setUpdateModal}
-                    getTodokey={getTodokey} addSubTodo={addSubTodo}
+                    getTodokey={getTodokey} addSubTodo={addSubTodo} setTodos={setTodos} changeSubTodoStatus={changeSubTodoStatus}
                 />
             </View>
             <View style={styles.mainView}>

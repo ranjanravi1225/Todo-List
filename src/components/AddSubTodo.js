@@ -12,17 +12,30 @@ import { Colors } from "./Colors";
 export default function AddSubTodo(props) {
 
 
-
     const [text, setText] = useState('');
-    const [valueText, setValueText] = useState('');
-    const [todoKey, setTodoKey] = useState(getTempKey);
 
     const todoText = (val) => {
         setText(val)
     }
 
-    const priorityValue = (val) => {
-        setValueText(val)
+    const addSubTodo = () => {
+        if (text.trim().length > 0) {
+            if (props.getTodokey.length > 0) {
+                const { key } = props.getTodokey[0]
+                let getKey = key;
+                const addSub = props.todos.map((e) => {
+                    if (e.key == getKey) {
+                        return { ...e, subTodo: [...e.subTodo, { text: text, key: Math.random().toString(), check: false, parentKey: getKey }] };
+                    }
+                    else {
+                        return { ...e };
+                    }
+                })
+                props.setTodos(addSub);
+            }
+        } else {
+            alert("Fill all the field")
+        }
     }
 
 
@@ -31,29 +44,12 @@ export default function AddSubTodo(props) {
             <Modal visible={props.subModalval} animationType="fade" transparent={true}>
                 <View style={styles.externalView}>
                     <View style={styles.internalView}>
-                        <Text style={styles.headerText}> Todo Key </Text>
-
-                        <TextInput
-                            style={styles.priorityInputBox}
-                            value={todoKey}
-                            onChangeText={setTodoKey}
-                            editable={false}
-                        />
                         <Text style={styles.headerText}> Add Sub Todo </Text>
 
                         <TextInput
                             style={styles.inputBox}
                             value={text}
                             onChangeText={todoText}
-                        />
-                        <Text style={styles.headerText}> Priority Value(1-10) </Text>
-
-                        <TextInput
-                            style={styles.priorityInputBox}
-                            keyboardType='numeric'
-                            maxLength={2}
-                            value={valueText}
-                            onChangeText={priorityValue}
                         />
                         <View style={styles.thirdView}>
                             <TouchableOpacity onPress={props.showSubModal}>
@@ -63,6 +59,7 @@ export default function AddSubTodo(props) {
                             <TouchableOpacity
                                 onPress={() => {
                                     props.setSubModalval(false);
+                                    addSubTodo(text);
                                 }}
                             >
                                 <Text style={styles.textStyle}> Done </Text>
@@ -139,4 +136,3 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 });
-

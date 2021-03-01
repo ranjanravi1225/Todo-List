@@ -11,6 +11,7 @@ import { Colors } from "./Colors";
 
 export default function UpdateTodo(props) {
 
+
     let temp = "";
     let temp1 = "";
     if (props.edittext.length > 0) {
@@ -55,8 +56,8 @@ export default function UpdateTodo(props) {
             alert("Fill all the field")
         }
         props.setUpdateModal(false);
-
     }
+
     return (
         <View>
             <Modal visible={props.modalval} animationType="fade" transparent={true}>

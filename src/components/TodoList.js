@@ -66,7 +66,7 @@ export default function TodoList(props) {
                 <FlatList
                     data={props.item.subTodo}
                     renderItem={({ item }) => (
-                        <SubTodo item={item} />
+                        <SubTodo item={item} changeSubTodoStatus={props.changeSubTodoStatus} />
                     )}
                 />
                 : null

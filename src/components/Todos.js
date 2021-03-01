@@ -31,6 +31,7 @@ export default function Todos(props) {
                             addSubTodo={props.addSubTodo}
                             todos={props.todos}
                             item={item}
+                            changeSubTodoStatus={props.changeSubTodoStatus}
                         />
                     )}
                 />
@@ -54,7 +55,8 @@ export default function Todos(props) {
                     showSubModal={showSubModal}
                     setSubModalval={setSubModalval}
                     getTodokey={props.getTodokey}
-
+                    todos={props.todos}
+                    setTodos={props.setTodos}
                 />
             ) : null}
         </>

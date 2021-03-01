@@ -14,6 +14,7 @@ export default function SubTodo(props) {
         <View style={styles.firstView} contentContainerStyle={{ flex: 1 }}>
             <View style={styles.flatlistView} >
                 <TouchableOpacity
+                    onPress={() => props.changeSubTodoStatus(props.item.key, props.item.parentKey)}
                 >
                     <Icon
                         name={
@@ -99,5 +100,4 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         alignItems: 'center',
     },
-
 });
