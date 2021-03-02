@@ -21,23 +21,26 @@ export default function Home() {
     }
 
 
-    const addTodo = (text, valueText) => {
+
+    const addTodo = (text, valueText, date) => {
         if (parseInt(valueText) > 10 || parseInt(valueText) < 1) {
             alert("Priority value should be in between 1-10");
+        }
+        else if (date == null) {
+            alert("Please fill date");
         }
         else if (text.trim().length > 0 && valueText.length > 0) {
             setTodos([
                 ...todos,
-                { text: text.trim(), value: valueText, key: Math.random().toString(), check: false, subTodo: [] },
+                { text: text.trim(), value: valueText, key: Math.random().toString(), date: date, check: false, subTodo: [] },
             ]
             );
             setSum(sum + parseInt(valueText));
-
         } else {
             alert("Fill all the input field");
         }
-
     }
+
 
     const changeStatus = (key) => {
         const checkStatus = todos.map((e) => {

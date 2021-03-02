@@ -7,11 +7,13 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import DatePicker from 'react-native-datepicker';
 import { Colors } from "./Colors";
 
 export default function AddTodo(props) {
     const [text, setText] = useState('');
     const [valueText, setValueText] = useState('');
+    const [date, setDate] = useState();
 
     const todoText = (val) => {
         setText(val)
@@ -20,6 +22,7 @@ export default function AddTodo(props) {
     const priorityValue = (val) => {
         setValueText(val)
     }
+
 
     return (
         <View>
@@ -42,6 +45,15 @@ export default function AddTodo(props) {
                             value={valueText}
                             onChangeText={priorityValue}
                         />
+                        <DatePicker
+                            style={styles.dateStyle}
+                            placeholder='Due Date'
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            date={date}
+                            onDateChange={(val) => setDate(val)}
+
+                        />
                         <View style={styles.thirdView}>
                             <TouchableOpacity onPress={props.showModal}>
                                 <Text style={styles.textStyle}>Cancel</Text>
@@ -49,7 +61,7 @@ export default function AddTodo(props) {
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    props.addTodo(text, valueText)
+                                    props.addTodo(text, valueText, date)
                                     props.setModalVal(false);
                                 }}
                             >
@@ -126,4 +138,12 @@ const styles = StyleSheet.create({
         color: Colors.blue,
         fontSize: 20,
     },
+    dateStyle: {
+        marginBottom: 10,
+        marginTop: 15,
+        borderColor: Colors.lightgray,
+        minWidth: 350,
+        marginLeft: 5,
+        marginRight: 5
+    }
 });
