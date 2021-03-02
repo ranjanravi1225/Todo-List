@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
         minWidth: 350,
         padding: 10,
     },
-
     thirdView: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -149,13 +148,11 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
-
     headerText: {
         fontSize: 20,
         fontWeight: "bold",
         paddingBottom: 10,
     },
-
     textStyle: {
         color: Colors.blue,
         fontSize: 20,

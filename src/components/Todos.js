@@ -22,7 +22,16 @@ export default function Todos(props) {
         <>
             <SafeAreaView style={styles.firstView} contentContainerStyle={{ flex: 1 }}>
                 <FlatList
-                    data={props.todos.slice(props.page * 10 - 10, props.page * 10)}
+                    data={props.todos.slice(props.page * 10 - 10, props.page * 10).sort((a, b) => {
+                        let x = a.date
+                        let y = b.date
+                        if (x === y) {
+                            { return a.value - b.value }
+                        } else {
+                            { return new Date(...a.date.split('/').reverse()) - new Date(...b.date.split('/').reverse()) }
+                        }
+                    }
+                    )}
                     renderItem={({ item }) => (
                         <TodoList
                             changeStatus={props.changeStatus}

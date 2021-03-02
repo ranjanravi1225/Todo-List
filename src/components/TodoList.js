@@ -11,9 +11,13 @@ import Octicons from "react-native-vector-icons/Octicons";
 import PlusIcon from "react-native-vector-icons/AntDesign";
 import { Colors } from "./Colors";
 import SubTodo from './SubTodo';
+import moment from "moment";
 
 
 export default function TodoList(props) {
+
+    let newdate = moment(props.item.date).format("YY");
+
     return (
         <>
             <View style={styles.firstView} contentContainerStyle={{ flex: 1 }}>
@@ -40,14 +44,20 @@ export default function TodoList(props) {
                         >
                             {props.item.text}
                         </Text>
-
-                        <Octicons
+                        <View style={styles.dateView}>
+                            <Text
+                                style={moment(props.item.date).format("MMM D, YY") < moment().format("MMM D, YY") ? styles.backDateText : styles.dateText}
+                            >
+                                {parseInt(newdate) < 21 ? moment(props.item.date).format("MMM D, YY") : moment(props.item.date).format("MMM D")}
+                            </Text>
+                        </View>
+                        {/* <Octicons
                             name="primitive-dot"
                             size={30}
                             color={props.item.check ? Colors.green : Colors.red}
-                        />
+                        /> */}
                         <View style={styles.priorityText}>
-                            <Text style={{ fontSize: 20 }}>{props.item.value}</Text>
+                            <Text style={styles.valueText}>{props.item.value}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -86,29 +96,44 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         paddingVertical: 20,
-        marginHorizontal: 15,
+        marginHorizontal: 10,
         height: 70,
         borderBottomWidth: 0.5,
         borderBottomColor: Colors.lightgray,
+
     },
 
     flatlistText: {
         paddingRight: 10,
         marginLeft: 10,
-        marginRight: 10,
+        marginRight: 5,
         marginBottom: 0.5,
         fontSize: 25,
-        minWidth: 250,
+        width: 200,
+        height: 35,
         borderBottomColor: Colors.lightgray,
-
+    },
+    dateView: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 1
+    },
+    dateText: {
+        fontSize: 20,
+        color: Colors.green
+    },
+    backDateText: {
+        fontSize: 20,
+        color: Colors.red,
     },
     flatlistText1: {
         paddingRight: 10,
         marginLeft: 10,
-        marginRight: 10,
+        marginRight: 5,
         marginBottom: 0.5,
         fontSize: 25,
-        minWidth: 250,
+        width: 200,
+        height: 35,
         borderBottomColor: Colors.lightgray,
         textDecorationLine: "line-through",
         opacity: 0.5,
@@ -122,9 +147,14 @@ const styles = StyleSheet.create({
     },
     priorityText: {
         margin: 1,
-        marginHorizontal: 10,
+        marginRight: 10,
         marginBottom: 5,
+        justifyContent: 'center',
         alignItems: 'center',
+    },
+    valueText: {
+        fontSize: 20,
+        color: Colors.blue,
     },
     addTouchable: {
         justifyContent: 'center',
